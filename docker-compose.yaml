@@ -1,0 +1,82 @@
+
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+    ports:
+      - 4533:4533
+    volumes:
+      - ./configs/navidrome:/data
+      - ./srv/data/media/music:/music:ro #read-only
+    restart: unless-stopped
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:nightly
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./configs/lidarr:/config
+      - ./srv/data:/data
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+  slskd:
+    image: slskd/slskd
+    container_name: slskd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Etc/UTC
+      - WEBUI_PORTS=5030/tcp,5031/tcp
+      - SLSKD_REMOTE_CONFIGURATION=true
+      - SLSKD_API_KEY=${SLSKD_API_KEY}
+      - SLSKD_SLSK_USERNAME=${SOULSEEK_USERNAME}
+      - SLSKD_SLSK_PASSWORD=${SOULSEEK_PASSWORD}
+      - SLSKD_DOWNLOADS_DIR=/data/slskd/complete
+      - SLSKD_INCOMPLETE_DIR=/data/slskd/incomplete
+      - SLSKD_SHARED_DIR=/data/media/music
+      - UNBOUND_ENABLED=false
+      - UNBOUND_NAMESERVERS
+    ports:
+      - 5030:5030
+      - 5031:5031
+    volumes:
+      - ./configs/slskd:/config
+      - ./srv/data:/data
+    restart: unless-stopped
+  explo:
+    image: ghcr.io/lumepart/explo:latest
+    container_name: explo
+    environment:
+      - TZ=UTC
+      - WEB_UI=true
+      - UI_USERNAME=${EXPLO_UI_USERNAME}
+      - UI_PASSWORD=${EXPLO_UI_PASSWORD}
+    ports:
+      - 7288:7288
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./configs/explo:/opt/explo/config
+      - ./configs/explo/.env:/opt/explo/.env
+      - ./srv/data/media/music/explo:/data
+      - ./srv/data/slskd:/slskd
+    restart: unless-stopped
+  aurral-sakura:
+    image: ghcr.io/lklynet/aurral:latest
+    container_name: aurral-sakura
+    environment:
+      - DOWNLOAD_FOLDER=./srv/data/slskd/complete
+    ports:
+      - 3001:3001
+    volumes:
+      - ./configs/aurral:/app/backend/data
+      - ./srv/data/slskd/complete:/app/downloads
+    restart: unless-stopped
