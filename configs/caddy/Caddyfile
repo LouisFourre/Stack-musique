@@ -1,0 +1,15 @@
+navi.louis-fourre.fr {
+    reverse_proxy navidrome:4533
+}
+
+lidarr.louis-fourre.fr {
+    reverse_proxy lidarr:8686
+}
+
+slskd.louis-fourre.fr {
+    reverse_proxy slskd:5030
+}
+
+grabber.louis-fourre.fr {
+    reverse_proxy music-grabber:8080
+}
