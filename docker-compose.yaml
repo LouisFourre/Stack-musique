@@ -101,11 +101,11 @@ services:
     ports:
       - "38274:8080"
     volumes:
-      - /srv/data/media/music:/music
-      - /srv/data:/data
+      - ./srv/data/media/music:/music
+      - ./srv/data:/data
     environment:
-      - MUSIC_DIR= /srv/data/media/music
-      - DB_PATH=/data/music_grabber.db
+      - MUSIC_DIR=/music
+      - DB_PATH=//data/music_grabber.db
       - ENABLE_MUSICBRAINZ=true
       - DEFAULT_CONVERT_TO_FLAC=true
       # Optional: Run as specific user (like *arr stack) for correct file permissions
