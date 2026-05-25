@@ -1,4 +1,3 @@
-
 services:
   navidrome:
     image: deluan/navidrome:latest
@@ -80,3 +79,57 @@ services:
       - ./configs/aurral:/app/backend/data
       - ./srv/data/slskd/complete:/app/downloads
     restart: unless-stopped
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./configs/caddy/data:/data
+      - ./configs/caddy/config:/config
+    restart: unless-stopped
+
+  music-grabber:
+    image: g33kphr33k/musicgrabber:latest
+    container_name: music-grabber
+    restart: unless-stopped
+    # Required for Spotify playlists over 100 tracks (headless browser)
+    shm_size: '2gb'
+    ports:
+      - "38274:8080"
+    volumes:
+      - /path/to/your/music:/music
+      - ./data:/data
+    environment:
+      - MUSIC_DIR= /srv/data/media//music
+      - DB_PATH=/data/music_grabber.db
+      # Optional: serve behind a reverse-proxy subpath (proxy must strip the prefix)
+      # - ROOT_PATH=/musicgrabber
+      - ENABLE_MUSICBRAINZ=true
+      - DEFAULT_CONVERT_TO_FLAC=true
+      # Optional: Run as specific user (like *arr stack) for correct file permissions
+      - PUID=1000
+      - PGID=1000
+      # Optional: Custom bind address/port (useful for IPv6 or non-standard setups)
+      # - LISTEN_ADDR=0.0.0.0
+      # - LISTEN_PORT=8080
+      # Optional: Navidrome auto-rescan
+      - NAVIDROME_URL=http://navidrome:4533
+      - NAVIDROME_USER=${NAVI_ADMIN}
+      - NAVIDROME_PASS=${NAVI_PWD}
+      # Optional: Jellyfin auto-rescan
+      # - JELLYFIN_URL=http://jellyfin:8096
+      # - JELLYFIN_API_KEY=your-jellyfin-api-key
+      # Optional: Notifications
+      # - NOTIFY_ON=playlists,bulk,errors
+      # - TELEGRAM_WEBHOOK_URL=https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}
+      # - WEBHOOK_URL=https://your-webhook-endpoint.com/hook
+      # - SMTP_HOST=smtp.example.com
+      # - SMTP_PORT=587
+      # - SMTP_USER=user@example.com
+      # - SMTP_PASS=password
+      # - SMTP_TO=you@example.com
+
