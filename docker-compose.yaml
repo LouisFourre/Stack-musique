@@ -10,7 +10,7 @@ services:
       - 4533:4533
     volumes:
       - ./configs/navidrome:/data
-      - ./srv/data/media/music:/music:ro #read-only
+      - ${MUSIC_PATH}/media/music:/music:ro #read-only
     restart: unless-stopped
   lidarr:
     image: lscr.io/linuxserver/lidarr:nightly
@@ -21,10 +21,11 @@ services:
       - TZ=Etc/UTC
     volumes:
       - ./configs/lidarr:/config
-      - ./srv/data:/data
+      - ${MUSIC_PATH}:/data
     ports:
       - 8686:8686
     restart: unless-stopped
+    
   slskd:
     image: slskd/slskd
     container_name: slskd
@@ -48,8 +49,9 @@ services:
       - 5031:5031
     volumes:
       - ./configs/slskd:/config
-      - ./srv/data:/data
+      - ${MUSIC_PATH}:/data
     restart: unless-stopped
+
   explo:
     image: ghcr.io/lumepart/explo:latest
     container_name: explo
@@ -65,31 +67,20 @@ services:
     volumes:
       - ./configs/explo:/opt/explo/config
       - ./configs/explo/.env:/opt/explo/.env
-      - ./srv/data/media/music/explo:/data
-      - ./srv/data/slskd:/slskd
+      - ${MUSIC_PATH}/media/music/explo:/data
+      - ${MUSIC_PATH}/slskd:/slskd
     restart: unless-stopped
+
   aurral-sakura:
     image: ghcr.io/lklynet/aurral:latest
     container_name: aurral-sakura
     environment:
-      - DOWNLOAD_FOLDER=./srv/data/slskd/complete
+      - DOWNLOAD_FOLDER=${MUSIC_PATH}/slskd/complete
     ports:
       - 3001:3001
     volumes:
       - ./configs/aurral:/app/backend/data
-      - ./srv/data/slskd/complete:/app/downloads
-    restart: unless-stopped
-
-  caddy:
-    image: caddy:latest
-    container_name: caddy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./configs/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./configs/caddy/data:/data
-      - ./configs/caddy/config:/config
+      - ${MUSIC_PATH}/slskd/complete:/app/downloads
     restart: unless-stopped
 
   music-grabber:
@@ -101,8 +92,8 @@ services:
     ports:
       - "38274:8080"
     volumes:
-      - ./srv/data/media/music:/music
-      - ./srv/data:/data
+      - ${MUSIC_PATH}/media/music:/music
+      - ${MUSIC_PATH}:/data
     environment:
       - MUSIC_DIR=/music
       - DB_PATH=//data/music_grabber.db

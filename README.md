@@ -19,7 +19,8 @@ chown -R 1000:1000 ./srv/data/
 Puis faire un docker compose up -d, les containers devraient tous démarrer et sont accesibles aux ports suivants:
 - slskd: http://<ip serveur>:5030
 - lidarr: http://<ip serveur>:8686
-- Navidrome http://<ip serveur>:http://<ip serveur>:4533
+- Navidrome http://<ip serveur>:4533
+- Music-grabber http://<ip serveur>:38274 (en local, sinon 8080)
 
 ### Configuration lidarr
 Installer dans `System -> Plugins` le plugin Tubifarry via `https://github.com/TypNull/Tubifarry`
@@ -39,3 +40,5 @@ Aller dans `Settings -> Media management` cliquer sur `Root folder` et créer un
 ### Configuration Aurral
 
 ### Configuration Navidrome
+
+### Configuration Music-grabber
