@@ -110,3 +110,15 @@ services:
       # - NOTIFY_ON=playlists,bulk,errors
       # - TELEGRAM_WEBHOOK_URL=https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}
       # - WEBHOOK_URL=https://your-webhook-endpoint.com/hook
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./configs/caddy/data:/data
+      - ./configs/caddy/config:/config
+    restart: unless-stopped

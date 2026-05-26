@@ -1,6 +1,6 @@
 # Stack-musique
 Self host de ma musique avec accès distant
-Installation autement basée sur l'installation de u/KnifinLTD2 [Lien](https://www.reddit.com/r/selfhosted/comments/1tjalq8/my_spotify_replacement_setup_navidrome_lidarr/)
+Installation hautement basée sur l'installation de u/KnifinLTD2 [Lien](https://www.reddit.com/r/selfhosted/comments/1tjalq8/my_spotify_replacement_setup_navidrome_lidarr/)
 
 ## Prè-requis
 - Avoir créer un compte sur `https://listenbrainz.org/` et avoir connecté le compte MusicBrainz a ListenBrainz.
@@ -41,4 +41,10 @@ Aller dans `Settings -> Media management` cliquer sur `Root folder` et créer un
 
 ### Configuration Navidrome
 
+Récupérer le token utilisateur sur [ListenBrainz](https://listenbrainz.org/settings/).  
+Aller dans `Profil -> personal` et activer `Scrobble to ListenBrainz` pour avoir les recommendations via l'algo Listenbrainz.  
+Coller le token récupérer précedamment dans la pop-up.  
+
 ### Configuration Music-grabber
+
+## Exposition
