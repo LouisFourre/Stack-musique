@@ -40,8 +40,8 @@ services:
       - SLSKD_API_KEY=${SLSKD_API_KEY}
       - SLSKD_SLSK_USERNAME=${SOULSEEK_USERNAME}
       - SLSKD_SLSK_PASSWORD=${SOULSEEK_PASSWORD}
-      - SLSKD_DOWNLOADS_DIR=/slskd/complete
-      - SLSKD_INCOMPLETE_DIR=/slskd/incomplete
+      - SLSKD_DOWNLOADS_DIR=/data/complete
+      - SLSKD_INCOMPLETE_DIR=/data/incomplete
       - SLSKD_SHARED_DIR=/data/media/music
       - UNBOUND_ENABLED=false
       - UNBOUND_NAMESERVERS
