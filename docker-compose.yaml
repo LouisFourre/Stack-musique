@@ -12,6 +12,7 @@ services:
       - ./configs/navidrome:/data
       - ${MUSIC_PATH}/media/music:/music:ro #read-only
     restart: unless-stopped
+
   lidarr:
     image: lscr.io/linuxserver/lidarr:nightly
     container_name: lidarr
@@ -39,8 +40,8 @@ services:
       - SLSKD_API_KEY=${SLSKD_API_KEY}
       - SLSKD_SLSK_USERNAME=${SOULSEEK_USERNAME}
       - SLSKD_SLSK_PASSWORD=${SOULSEEK_PASSWORD}
-      - SLSKD_DOWNLOADS_DIR=/data/slskd/complete
-      - SLSKD_INCOMPLETE_DIR=/data/slskd/incomplete
+      - SLSKD_DOWNLOADS_DIR=/slskd/complete
+      - SLSKD_INCOMPLETE_DIR=/slskd/incomplete
       - SLSKD_SHARED_DIR=/data/media/music
       - UNBOUND_ENABLED=false
       - UNBOUND_NAMESERVERS
@@ -49,7 +50,7 @@ services:
       - 5031:5031
     volumes:
       - ./configs/slskd:/config
-      - ${MUSIC_PATH}:/data
+      - ${MUSIC_PATH}/slskd:/data
     restart: unless-stopped
 
   explo:
